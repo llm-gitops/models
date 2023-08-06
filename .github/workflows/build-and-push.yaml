@@ -47,7 +47,7 @@ jobs:
       run: |
         cd model
         flux push artifact \
-          --creds chanwit:$GITHUB_TOKEN \
+          --creds chanwit:${{ secrets.GHCR_TOKEN }} \
           oci://ghcr.io/llm-gitops/models/vicuna-13b-16k:v1.5-ggmlv3 \
           --timeout 120m0s \
           --path="./" \
