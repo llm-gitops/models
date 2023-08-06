@@ -39,7 +39,9 @@ jobs:
         python download.py
 
         cd model
-        cp --remove-destination $(readlink vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin) vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin
+        target=$(readlink vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin)
+        cp --remove-destination $target vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin
+        rm -rf $target
 
     - name: Push model
       run: |
