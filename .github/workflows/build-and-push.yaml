@@ -1,0 +1,51 @@
+name: build-and-push
+
+on:
+  push:
+    branches:
+      - main  # or whichever branch you'd like to target
+
+permissions:
+  packages: write # needed for ghcr.io access
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout your repo
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Install Python 3.10
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+
+    # Install Flux v2 CLI
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+
+    # Install huggingface_hub package
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install huggingface_hub
+
+    # Run your script
+    - name: Download model
+      run: |
+        python download.py
+
+        cp --remove-destination $(readlink ./model/vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin) ./model/vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin
+
+    - name: Push model
+      run: |
+        cd model
+        flux push artifact \
+          oci://ghcr.io/llm-gitops/models/vicuna-13b-16k:v1.5-ggmlv3 \
+          --timeout 120m0s \
+          --path="./" \
+          --source="$(git config --get remote.origin.url)" \
+          --revision="$(git branch --show-current)@sha1:$(git rev-parse HEAD)"
