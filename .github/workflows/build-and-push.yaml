@@ -54,13 +54,13 @@ jobs:
 
     # OLD oci://ghcr.io/llm-gitops/models/vicuna-13b-16k:v1.5-ggmlv3
     # <model-name>-<param size>-<context size>-<quantization>:<version>-<format>-<release>
-    # llama-2-7b-4k-Q5_K_M:v1-gguf-r0
+    # llama-2-7b-chat-4k-Q5_K_M:v1-gguf-r0
     - name: Push model
       run: |
         cd model
         flux push artifact \
           --creds chanwit:${{ secrets.GHCR_TOKEN }} \
-          oci://ghcr.io/llm-gitops/models/llama-2-7b-4k-Q5_K_M:v1-gguf-r0 \
+          oci://ghcr.io/llm-gitops/models/llama-2-7b-chat-4k-Q5_K_M:v1-gguf-r0 \
           --timeout 120m0s \
           --path="./" \
           --source="$(git config --get remote.origin.url)" \
