@@ -74,8 +74,8 @@ jobs:
         cd model
         tree .
         target=$(readlink ${{ matrix.config.file }})
-        echo ">>> ${target}"
-        cp --remove-destination $target ${{ matrix.config.file }}
+        cd $(dirname ${{ matrix.config.file }})
+        cp --remove-destination $target $(basename ${{ matrix.config.file }})
         rm -rf $target
 
     - name: Push model
