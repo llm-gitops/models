@@ -72,6 +72,8 @@ jobs:
         python download.py
 
         cd model
+        rm .keep # delete the place holder file
+        
         MODEL_DIR=$PWD
         pushd .
         tree .
