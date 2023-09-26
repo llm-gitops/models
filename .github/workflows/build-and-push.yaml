@@ -72,7 +72,9 @@ jobs:
         python download.py
 
         cd model
+        tree .
         target=$(readlink ${{ matrix.config.file }})
+        echo ">>> ${target}"
         cp --remove-destination $target ${{ matrix.config.file }}
         rm -rf $target
 
