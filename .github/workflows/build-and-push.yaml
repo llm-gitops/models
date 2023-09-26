@@ -27,11 +27,11 @@ jobs:
 
           - repo: "skeskinen/ggml"
             file: "all-MiniLM-L12-v2/ggml-model-q4_1.bin"
-            image: "all-MiniLM-L12-v2-q41:v1.0-ggml-r0"
+            image: "all-minilm-l12-v2-q41:v1.0-ggml-r0"
 
           - repo: "skeskinen/ggml"
             file: "all-MiniLM-L6-v2/ggml-model-q4_1.bin"
-            image: "all-MiniLM-L6-v2-q41:v1.0-ggml-r0"
+            image: "all-minilm-l6-v2-q41:v1.0-ggml-r0"
 
     steps:
     # Checkout your repo
@@ -72,10 +72,12 @@ jobs:
         python download.py
 
         cd model
+        pushd .
         tree .
         target=$(readlink ${{ matrix.config.file }})
         cd $(dirname ${{ matrix.config.file }})
         cp --remove-destination $target $(basename ${{ matrix.config.file }})
+        popd
         rm -rf $target
 
     - name: Push model
