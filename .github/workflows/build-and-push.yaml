@@ -72,13 +72,22 @@ jobs:
         python download.py
 
         cd model
+        MODEL_DIR=$PWD
         pushd .
         tree .
-        target=$(readlink ${{ matrix.config.file }})
+        TARGET=$(readlink ${{ matrix.config.file }})
         cd $(dirname ${{ matrix.config.file }})
-        cp --remove-destination $target $(basename ${{ matrix.config.file }})
+        cp --remove-destination $TARGET $(basename ${{ matrix.config.file }})
         popd
-        rm -rf $target
+        rm -rf $TARGET
+        
+        # flatten structure
+        find . -type f | while read -r file; do
+            # Move each file to the /models directory
+            mv "$file" "${MODEL_DIR}/$(basename "$file")"
+        done
+        # once all files have been moved, find and remove any empty directories
+        find . -type d -empty -delete
 
     - name: Push model
       run: |
