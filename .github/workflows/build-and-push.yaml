@@ -25,6 +25,14 @@ jobs:
             file: "llama-2-7b.Q2_K.gguf"
             image: "llama-2-7b-4k-q2k:v1.0-gguf-r0"
 
+          - repo: "skeskinen/ggml"
+            file: "all-MiniLM-L12-v2/ggml-model-q4_1.bin"
+            image: "all-MiniLM-L12-v2-q41:v1.0-ggml-r0"
+
+          - repo: "skeskinen/ggml"
+            file: "all-MiniLM-L6-v2/ggml-model-q4_1.bin"
+            image: "all-MiniLM-L6-v2-q41:v1.0-ggml-r0"
+
     steps:
     # Checkout your repo
     - name: Checkout code
