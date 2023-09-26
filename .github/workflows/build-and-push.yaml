@@ -83,6 +83,7 @@ jobs:
     - name: Push model
       run: |
         cd model
+        tree .
         flux push artifact \
           --creds chanwit:${{ secrets.GHCR_TOKEN }} \
           oci://ghcr.io/llm-gitops/models/${{ matrix.config.image }} \
