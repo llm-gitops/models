@@ -82,7 +82,7 @@ jobs:
         rm -rf $TARGET
         
         # flatten structure
-        find . -type f | while read -r file; do
+        find . -mindepth 2 -type f | while read -r file; do
             # Move each file to the /models directory
             mv "$file" "${MODEL_DIR}/$(basename "$file")"
         done
