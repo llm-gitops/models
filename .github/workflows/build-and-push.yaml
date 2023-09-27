@@ -19,19 +19,23 @@ jobs:
         config:
           - repo: "TheBloke/Llama-2-7b-Chat-GGUF"
             file: "llama-2-7b-chat.Q5_K_M.gguf"
-            image: "llama-2-7b-chat-4k-q5km:v1.0-gguf-r0"
+            image: "llama-2-7b-chat-4k-q5km:v1.0.0-gguf"
 
           - repo: "TheBloke/Llama-2-7b-GGUF"
             file: "llama-2-7b.Q2_K.gguf"
-            image: "llama-2-7b-4k-q2k:v1.0-gguf-r0"
+            image: "llama-2-7b-4k-q2k:v1.0.0-gguf"
+
+          - repo: "TheBloke/vicuna-13B-v1.5-16K-GGUF"
+            file: "vicuna-13b-v1.5-16k.Q5_K_M.gguf"
+            image: "vicuna-13b-16k-q5km:v1.5.0-gguf"
 
           - repo: "skeskinen/ggml"
             file: "all-MiniLM-L12-v2/ggml-model-q4_1.bin"
-            image: "all-minilm-l12-v2-q41:v1.0-ggml-r0"
+            image: "all-minilm-l12-v2-q41:v1.0.0-ggml"
 
           - repo: "skeskinen/ggml"
             file: "all-MiniLM-L6-v2/ggml-model-q4_1.bin"
-            image: "all-minilm-l6-v2-q41:v1.0-ggml-r0"
+            image: "all-minilm-l6-v2-q41:v1.0.0-ggml"
 
     steps:
     # Checkout your repo
