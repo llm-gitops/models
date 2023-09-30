@@ -29,6 +29,10 @@ jobs:
             file: "vicuna-13b-v1.5-16k.Q5_K_M.gguf"
             image: "vicuna-13b-16k-q5km:v1.5.0-gguf"
 
+          - repo: "TheBloke/Llama-2-7B-32K-Instruct-GGUF"
+            file: "llama-2-7b-32k-instruct.Q5_K_M.gguf"
+            image: "llama-2-7b-32k-instruct-q5km:v1.0.0-gguf"
+
           - repo: "skeskinen/ggml"
             file: "all-MiniLM-L12-v2/ggml-model-q4_1.bin"
             image: "all-minilm-l12-v2-q41:v1.0.0-ggml"
