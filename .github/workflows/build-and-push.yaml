@@ -34,8 +34,8 @@ jobs:
             image: "llama-2-7b-instruct-32k:v1.0.0-q5km-gguf"
 
           - repo: "TheBloke/sqlcoder-GGUF"
-            file: "sqlcoder.Q5_K_M.gguf"
-            image: "sqlcoder:v1.0.0-q5km-gguf"
+            file: "sqlcoder.Q4_K_M.gguf"
+            image: "sqlcoder:v1.0.0-q4km-gguf"
 
           - repo: "skeskinen/ggml"
             file: "all-MiniLM-L12-v2/ggml-model-q4_1.bin"
