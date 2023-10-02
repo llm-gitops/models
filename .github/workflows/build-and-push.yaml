@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       # OLD oci://ghcr.io/llm-gitops/models/vicuna-13b-16k:v1.5-ggmlv3
       # <model-name>-<param size>-<context size>-<quantization>:<version>-<format>-<release>
