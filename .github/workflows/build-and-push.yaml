@@ -18,6 +18,10 @@ jobs:
       # llama-2-7b-chat-4k-Q5_K_M:v1-gguf-r0
       matrix:
         config:
+          - repo: "TheBloke/Llama-2-70b-Chat-GGUF"
+            file: "llama-2-70b-chat.Q5_K_M.gguf"
+            image: "llama-2-70b-chat-4k:v1.0.0-q5km-gguf"
+
           - repo: "TheBloke/Llama-2-7b-Chat-GGUF"
             file: "llama-2-7b-chat.Q5_K_M.gguf"
             image: "llama-2-7b-chat-4k:v1.0.0-q5km-gguf"
