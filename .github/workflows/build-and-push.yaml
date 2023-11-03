@@ -26,9 +26,13 @@ jobs:
           #  file: "llama-2-7b-chat.Q5_K_M.gguf"
           #  image: "llama-2-7b-chat-4k:v1.0.0-q5km-gguf"
 
+          - repo: "TheBloke/zephyr-7B-beta-GGUF"
+            file: "zephyr-7b-beta.Q5_K_M.gguf"
+            image: "zephyr-7b-beta-8k:v1.0.0-q5km-gguf"
+
           - repo: "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
             file: "mistral-7b-instruct-v0.1.Q5_K_M.gguf"
-            image: "mistral-7b-instruct-4k:v0.1.0-q5km-gguf"
+            image: "mistral-7b-instruct-8k:v0.1.0-q5km-gguf"
 
           - repo: "TheBloke/Llama-2-7b-GGUF"
             file: "llama-2-7b.Q2_K.gguf"
@@ -38,9 +42,9 @@ jobs:
             file: "llama-2-7b.Q4_K_M.gguf"
             image: "llama-2-7b-4k:v1.0.0-q4km-gguf"
 
-          - repo: "TheBloke/vicuna-13B-v1.5-16K-GGUF"
-            file: "vicuna-13b-v1.5-16k.Q5_K_M.gguf"
-            image: "vicuna-13b-16k:v1.5.0-q5km-gguf"
+          # - repo: "TheBloke/vicuna-13B-v1.5-16K-GGUF"
+          #  file: "vicuna-13b-v1.5-16k.Q5_K_M.gguf"
+          #  image: "vicuna-13b-16k:v1.5.0-q5km-gguf"
 
           - repo: "TheBloke/Llama-2-7B-32K-Instruct-GGUF"
             file: "llama-2-7b-32k-instruct.Q5_K_M.gguf"
