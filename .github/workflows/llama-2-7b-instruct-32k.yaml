@@ -1,0 +1,32 @@
+name: llama-2-7b-instruct-32k
+
+on:
+  push:
+    branches:
+      - main  # or whichever branch you'd like to target
+    paths:
+      - '.github/workflows/llama-2-7b-instruct-32k.yaml'
+      - 'llama-2-7b-instruct-32k/**'
+
+permissions:
+  packages: write # needed for ghcr.io access
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Repository Dispatch
+      run: |
+        curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -u chanwit:${{ secrets.GHCR_TOKEN }} \
+            https://api.github.com/repos/llm-gitops/models/actions/workflows/build-and-push.yaml/dispatches \
+            -d '{
+                    "ref":"main",
+                    "inputs": {
+                      "branch": "main",
+                      "model_repo": "TheBloke/Llama-2-7B-32K-Instruct-GGUF",
+                      "model_file": "llama-2-7b-32k-instruct.Q5_K_M.gguf",
+                      "model_image": "llama-2-7b-instruct-32k:v1.0.0-q5km-gguf"
+                    }
+                }'

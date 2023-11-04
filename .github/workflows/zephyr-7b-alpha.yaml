@@ -1,0 +1,32 @@
+name: zephyr-7b-alpha
+
+on:
+  push:
+    branches:
+      - main  # or whichever branch you'd like to target
+    paths:
+      - '.github/workflows/zephyr-7b-alpha.yaml'
+      - 'zephyr-7b-alpha/**'
+
+permissions:
+  packages: write # needed for ghcr.io access
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Repository Dispatch
+      run: |
+        curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -u chanwit:${{ secrets.GHCR_TOKEN }} \
+            https://api.github.com/repos/llm-gitops/models/actions/workflows/build-and-push.yaml/dispatches \
+            -d '{
+                    "ref":"main",
+                    "inputs": {
+                      "branch": "main",
+                      "model_repo": "TheBloke/zephyr-7B-alpha-GGUF",
+                      "model_file": "zephyr-7b-alpha.Q5_K_M.gguf",
+                      "model_image": "zephyr-7b-alpha-8k:v1.0.0-q5km-gguf"
+                    }
+                }'

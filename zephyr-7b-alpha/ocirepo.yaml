@@ -1,0 +1,33 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: zephyr-7b-alpha
+  namespace: flux-system
+  labels:
+    artifact-kind: language-model
+  annotations:
+    ai.contrib.fluxcd.io/original-model-repo: https://huggingface.co/HuggingFaceH4/zephyr-7b-alpha
+    ai.contrib.fluxcd.io/model-repo: TheBloke/zephyr-7B-alpha-GGUF
+    ai.contrib.fluxcd.io/model-file: zephyr-7b-alpha.Q5_K_M.gguf
+    ai.contrib.fluxcd.io/model-version: 1.0.0
+    ai.contrib.fluxcd.io/format: GGUFv2
+    ai.contrib.fluxcd.io/family: mistral # backend
+    ai.contrib.fluxcd.io/context-size: 8192
+    ai.contrib.fluxcd.io/quantization: Q5_K_M
+    ai.contrib.fluxcd.io/size-on-disk: 4.7G
+    ai.contrib.fluxcd.io/memory-required: 5.4G
+    ai.contrib.fluxcd.io/layers: 15 # which can be offloaded to GPU
+    ai.contrib.fluxcd.io/prompt-template: |-
+      <|system|>
+      </s>
+      <|user|>
+      {prompt}</s>
+      <|assistant|>
+spec:
+  interval: 10m
+  url: oci://ghcr.io/llm-gitops/models/zephyr-7b-alpha-8k
+  ref:
+    tag: v1.0.0-q5km-gguf
+  layerSelector:
+    mediaType: "application/vnd.cncf.flux.content.v1.tar+gzip"
+    operation: copy
