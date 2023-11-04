@@ -8,5 +8,5 @@ file_pattern = os.environ["MODEL_FILE"]
 snapshot_download(
     repo_id=repo_id,
     allow_patterns=file_pattern,
-    local_dir="./model"
+    local_dir="./.model"
 )
