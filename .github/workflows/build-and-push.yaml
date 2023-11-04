@@ -1,9 +1,18 @@
 name: build-and-push
 
 on:
-  push:
-    branches:
-      - main  # or whichever branch you'd like to target
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build from'
+        required: true
+        default: 'main'
+      model_file:
+        required: true
+      model_repo:
+        required: true
+      model_image:
+        required: true
 
 permissions:
   packages: write # needed for ghcr.io access
@@ -12,56 +21,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     # runs-on: self-hosted
-    strategy:
-      # OLD oci://ghcr.io/llm-gitops/models/vicuna-13b-16k:v1.5-ggmlv3
-      # <model-name>-<param size>-<context size>-<quantization>:<version>-<format>-<release>
-      # llama-2-7b-chat-4k-Q5_K_M:v1-gguf-r0
-      matrix:
-        config:
-          # - repo: "TheBloke/Llama-2-70b-Chat-GGUF"
-          #  file: "llama-2-70b-chat.Q5_K_M.gguf"
-          #  image: "llama-2-70b-chat-4k:v1.0.0-q5km-gguf"
-
-          # - repo: "TheBloke/Llama-2-7b-Chat-GGUF"
-          #  file: "llama-2-7b-chat.Q5_K_M.gguf"
-          #  image: "llama-2-7b-chat-4k:v1.0.0-q5km-gguf"
-
-          - repo: "TheBloke/zephyr-7B-beta-GGUF"
-            file: "zephyr-7b-beta.Q5_K_M.gguf"
-            image: "zephyr-7b-beta-8k:v1.0.0-q5km-gguf"
-
-          - repo: "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
-            file: "mistral-7b-instruct-v0.1.Q5_K_M.gguf"
-            image: "mistral-7b-instruct-8k:v0.1.0-q5km-gguf"
-
-          - repo: "TheBloke/Llama-2-7b-GGUF"
-            file: "llama-2-7b.Q2_K.gguf"
-            image: "llama-2-7b-4k:v1.0.0-q2k-gguf"
-
-          - repo: "TheBloke/Llama-2-7b-GGUF"
-            file: "llama-2-7b.Q4_K_M.gguf"
-            image: "llama-2-7b-4k:v1.0.0-q4km-gguf"
-
-          # - repo: "TheBloke/vicuna-13B-v1.5-16K-GGUF"
-          #  file: "vicuna-13b-v1.5-16k.Q5_K_M.gguf"
-          #  image: "vicuna-13b-16k:v1.5.0-q5km-gguf"
-
-          - repo: "TheBloke/Llama-2-7B-32K-Instruct-GGUF"
-            file: "llama-2-7b-32k-instruct.Q5_K_M.gguf"
-            image: "llama-2-7b-instruct-32k:v1.0.0-q5km-gguf"
-
-          - repo: "TheBloke/sqlcoder-GGUF"
-            file: "sqlcoder.Q4_K_M.gguf"
-            image: "sqlcoder:v1.0.0-q4km-gguf"
-
-          - repo: "skeskinen/ggml"
-            file: "all-MiniLM-L12-v2/ggml-model-q4_1.bin"
-            image: "all-minilm-l12-v2:v1.0.0-q41-ggml"
-
-          - repo: "skeskinen/ggml"
-            file: "all-MiniLM-L6-v2/ggml-model-q4_1.bin"
-            image: "all-minilm-l6-v2:v1.0.0-q41-ggml"
-
     steps:
     # Checkout your repo
     - name: Checkout code
@@ -83,20 +42,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install huggingface_hub
 
-    # Run your script
-    # - name: Download model
-    #   run: |
-    #     python download.py
-
-    #     cd model
-    #     target=$(readlink vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin)
-    #     cp --remove-destination $target vicuna-13b-v1.5-16k.ggmlv3.q4_1.bin
-    #     rm -rf $target
-
     - name: Download model
       env:
-        MODEL_REPO: ${{ matrix.config.repo }}
-        MODEL_FILE: ${{ matrix.config.file }}
+        MODEL_REPO: ${{ github.event.inputs.model_repo }}
+        MODEL_FILE: ${{ github.event.inputs.model_file }}
+        MODEL_IMAGE: ${{ github.event.inputs.model_image }}
       run: |
         python download.py
 
@@ -106,9 +56,9 @@ jobs:
         MODEL_DIR=$PWD
         pushd .
         tree .
-        TARGET=$(readlink ${{ matrix.config.file }})
-        cd $(dirname ${{ matrix.config.file }})
-        cp --remove-destination $TARGET $(basename ${{ matrix.config.file }})
+        TARGET=$(readlink $MODEL_FILE)
+        cd $(dirname $MODEL_FILE)
+        cp --remove-destination $TARGET $(basename $MODEL_FILE)
         popd
         rm -rf $TARGET
         
@@ -121,12 +71,16 @@ jobs:
         find . -type d -empty -delete
 
     - name: Push model
+      env:
+        MODEL_REPO: ${{ github.event.inputs.model_repo }}
+        MODEL_FILE: ${{ github.event.inputs.model_file }}
+        MODEL_IMAGE: ${{ github.event.inputs.model_image }}
       run: |
         cd model
         tree .
         flux push artifact \
           --creds chanwit:${{ secrets.GHCR_TOKEN }} \
-          oci://ghcr.io/llm-gitops/models/${{ matrix.config.image }} \
+          oci://ghcr.io/llm-gitops/models/${MODEL_IMAGE} \
           --timeout 120m0s \
           --path="./" \
           --source="$(git config --get remote.origin.url)" \
