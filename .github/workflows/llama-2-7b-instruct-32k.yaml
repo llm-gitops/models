@@ -1,9 +1,10 @@
 name: llama-2-7b-instruct-32k
 
 on:
+  workflow_dispatch: {}
   push:
     branches:
-      - main  # or whichever branch you'd like to target
+      - main
     paths:
       - '.github/workflows/llama-2-7b-instruct-32k.yaml'
       - 'llama-2-7b-instruct-32k/**'

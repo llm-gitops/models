@@ -1,9 +1,10 @@
 name: zephyr-7b-alpha
 
 on:
+  workflow_dispatch: {}
   push:
     branches:
-      - main  # or whichever branch you'd like to target
+      - main
     paths:
       - '.github/workflows/zephyr-7b-alpha.yaml'
       - 'zephyr-7b-alpha/**'
