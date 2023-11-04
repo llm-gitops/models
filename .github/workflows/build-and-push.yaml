@@ -51,7 +51,7 @@ jobs:
       run: |
         python download.py
 
-        cd model
+        cd .model
         rm .keep # delete the place holder file
         
         MODEL_DIR=$PWD
@@ -65,7 +65,7 @@ jobs:
         
         # flatten structure
         find . -mindepth 2 -type f | while read -r file; do
-            # Move each file to the /models directory
+            # Move each file to the /.models directory
             mv "$file" "${MODEL_DIR}/$(basename "$file")"
         done
         # once all files have been moved, find and remove any empty directories
@@ -77,7 +77,7 @@ jobs:
         MODEL_FILE: ${{ github.event.inputs.model_file }}
         MODEL_IMAGE: ${{ github.event.inputs.model_image }}
       run: |
-        cd model
+        cd .model
         tree .
         flux push artifact \
           --creds chanwit:${{ secrets.GHCR_TOKEN }} \
