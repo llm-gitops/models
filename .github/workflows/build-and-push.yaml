@@ -19,6 +19,7 @@ permissions:
 
 jobs:
   build:
+    name: "build ${{ github.event.inputs.model_image }}"
     runs-on: ubuntu-latest
     # runs-on: self-hosted
     steps:
