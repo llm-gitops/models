@@ -1,0 +1,33 @@
+name: mistrallite-7b
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/mistrallite-7b.yaml'
+      - 'mistrallite-7b/**'
+
+permissions:
+  packages: write # needed for ghcr.io access
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Repository Dispatch
+      run: |
+        curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -u chanwit:${{ secrets.GHCR_TOKEN }} \
+            https://api.github.com/repos/llm-gitops/models/actions/workflows/build-and-push.yaml/dispatches \
+            -d '{
+                    "ref":"main",
+                    "inputs": {
+                      "branch": "main",
+                      "model_repo": "TheBloke/MistralLite-7B-GGUF",
+                      "model_file": "mistrallite.Q5_K_M.gguf",
+                      "model_image": "mistrallite-7b-16k:v1.0.0-q5km-gguf"
+                    }
+                }'
