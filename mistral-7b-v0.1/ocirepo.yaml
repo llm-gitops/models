@@ -1,0 +1,29 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: mistral-7b-v0.1
+  namespace: flux-system
+  labels:
+    artifact-kind: language-model
+  annotations:
+    ai.contrib.fluxcd.io/original-model-repo: https://huggingface.co/mistralai/Mistral-7B-v0.1
+    ai.contrib.fluxcd.io/model-repo: TheBloke/Mistral-7B-v0.1-GGUF
+    ai.contrib.fluxcd.io/model-file: mistral-7b-v0.1.Q5_K_M.gguf
+    ai.contrib.fluxcd.io/model-version: v0.1.0
+    ai.contrib.fluxcd.io/format: GGUFv2
+    ai.contrib.fluxcd.io/family: mistral # backend
+    ai.contrib.fluxcd.io/context-size: 8192
+    ai.contrib.fluxcd.io/quantization: Q5_K_M
+    ai.contrib.fluxcd.io/size-on-disk: 5.13GB  
+    ai.contrib.fluxcd.io/memory-required: 7.63GB
+    ai.contrib.fluxcd.io/layers: 32 # which can be offloaded to GPU
+    ai.contrib.fluxcd.io/prompt-template: |-
+      {prompt}
+spec:
+  interval: 10m
+  url: oci://ghcr.io/llm-gitops/models/mistral-7b-v0.1-8k
+  ref:
+    tag: v0.1.0-q5km-gguf
+  layerSelector:
+    mediaType: "application/vnd.cncf.flux.content.v1.tar+gzip"
+    operation: copy
