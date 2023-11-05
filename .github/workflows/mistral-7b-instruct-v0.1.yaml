@@ -1,0 +1,33 @@
+name: mistral-7b-instruct-v0.1
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/mistral-7b-instruct-v0.1.yaml'
+      - 'mistral-7b-instruct-v0.1/**'
+
+permissions:
+  packages: write # needed for ghcr.io access
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Repository Dispatch
+      run: |
+        curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -u chanwit:${{ secrets.GHCR_TOKEN }} \
+            https://api.github.com/repos/llm-gitops/models/actions/workflows/build-and-push.yaml/dispatches \
+            -d '{
+                    "ref":"main",
+                    "inputs": {
+                      "branch": "main",
+                      "model_repo": "TheBloke/Mistral-7B-Instruct-v0.1-GGUF",
+                      "model_file": "mistral-7b-instruct-v0.1.Q5_K_M.gguf",
+                      "model_image": "mistral-7b-instruct-v0.1-8k:v0.1.0-q5km-gguf"
+                    }
+                }'
